@@ -26,9 +26,10 @@
   </h1>
 
   <section class="make-center">
-    <input type="text" style="display:none" id="room-id" value="teamc" autocorrect=off autocapitalize=off size=20>
-    <button id="open-room">Open new Room</button>
-    <button id="join-room">Join existing Room</button>
+    <input type="text" id="room-id" value="teamc" autocorrect=off autocapitalize=off size=20>
+    <button id="open-room">Open Room</button>
+    <button id="join-room">Join Room</button>
+    <button id="open-or-join-room">open or join room</button>
 
     <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
 
@@ -60,6 +61,14 @@ document.getElementById('join-room').onclick = function() {
     connection.join(document.getElementById('room-id').value);
 };
 
+document.getElementById('open-or-join-room').onclick = function() {
+    disableInputButtons();
+    connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
+        if (!isRoomExist) {
+            showRoomURL(roomid);
+        }
+    });
+};
 
 // ......................................................
 // ..................RTCMultiConnection Code.............
@@ -143,6 +152,7 @@ connection.onMediaError = function(e) {
 };
 
 function disableInputButtons() {
+    document.getElementById('open-or-join-room').disabled = true;
     document.getElementById('open-room').disabled = true;
     document.getElementById('join-room').disabled = true;
     document.getElementById('room-id').disabled = true;
@@ -157,9 +167,13 @@ function showRoomURL(roomid) {
     var roomQueryStringURL = '?roomid=' + roomid;
 
     var html = '<h2>Unique URL for your room:</h2><br>';
-
     html += '<br>';
-    html += 'Share URL to join: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
+    html += 'URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
+
+    var roomURLsDiv = document.getElementById('room-urls');
+    roomURLsDiv.innerHTML = html;
+
+    roomURLsDiv.style.display = 'block';
 }
 
 (function() {
