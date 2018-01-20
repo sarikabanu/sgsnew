@@ -107,9 +107,9 @@ function serverHandler(request, response) {
             } else if (filename.indexOf(resolveURL('/demos')) !== -1) {
                 filename = filename.replace(resolveURL('/demos/'), '');
                 filename = filename.replace(resolveURL('/demos'), '');
-                filename += resolveURL('/demos/video-Conferencing.html');
+                filename += resolveURL('/demos/Video-Conferencing.html');
             } else {
-                filename += resolveURL('/demos/video-Conferencing.html');
+                filename += resolveURL('/demos/Video-Conferencing.html');
             }
         }
 
